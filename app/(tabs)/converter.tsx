@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 
-export default function HomeScreen() {
+export default function ConverterScreen() {
     return (
         <View style={styles.base} className="flex-1 items-center justify-center p-4">
-            <Text className="text-base leading-6">Main Map view will be here</Text>
+            <Text className="text-base leading-6">Coordinate Converter view</Text>
         </View>
     )
 }
