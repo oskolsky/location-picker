@@ -7,7 +7,7 @@ export const Header = () => {
     return (
         <SafeAreaInsetsContext.Consumer>
             {insets => (
-                <View style={{ paddingTop: insets?.top }}>
+                <View style={{ paddingTop: insets?.top, paddingHorizontal: 16 }}>
                     <View style={styles.base}>
                         <MapPinCheckIcon strokeWidth={2.5} color="#000" />
                         <Text style={styles.text}>Location Picker</Text>
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
-        padding: 16,
+        paddingVertical: 16,
         backgroundColor: '#fff',
         borderBottomWidth: 1,
         borderBottomColor: '#d1d5db',

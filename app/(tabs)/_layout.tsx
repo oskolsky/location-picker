@@ -3,6 +3,13 @@ import { StyleSheet, Text } from 'react-native'
 import { Tabs } from 'expo-router'
 import { CompassIcon, HeartIcon, HouseIcon, InfoIcon } from 'lucide-react-native'
 
+const TABS = [
+    { name: 'index', label: 'home', icon: HouseIcon },
+    { name: 'saved', label: 'Saved', icon: HeartIcon },
+    { name: 'converter', label: 'Converter', icon: CompassIcon },
+    { name: 'about', label: 'About', icon: InfoIcon },
+]
+
 export default function TabLayout() {
     return (
         <Tabs
@@ -13,34 +20,15 @@ export default function TabLayout() {
                 tabBarStyle: styles.base,
             }}
         >
-            <Tabs.Screen
-                name="index"
-                options={{
-                    tabBarIcon: ({ color }) => <HouseIcon size={20} color={color} />,
-                    tabBarLabel: ({ color }) => <Text style={{ ...styles.label, color }}>Home</Text>,
-                }}
-            />
-            <Tabs.Screen
-                name="saved"
-                options={{
-                    tabBarIcon: ({ color }) => <HeartIcon size={20} color={color} />,
-                    tabBarLabel: ({ color }) => <Text style={{ ...styles.label, color }}>Saved</Text>,
-                }}
-            />
-            <Tabs.Screen
-                name="converter"
-                options={{
-                    tabBarIcon: ({ color }) => <CompassIcon size={20} color={color} />,
-                    tabBarLabel: ({ color }) => <Text style={{ ...styles.label, color }}>Converter</Text>,
-                }}
-            />
-            <Tabs.Screen
-                name="about"
-                options={{
-                    tabBarIcon: ({ color }) => <InfoIcon size={20} color={color} />,
-                    tabBarLabel: ({ color }) => <Text style={{ ...styles.label, color }}>About</Text>,
-                }}
-            />
+            {TABS.map(tab => (
+                <Tabs.Screen
+                    name={tab.name}
+                    options={{
+                        tabBarIcon: ({ color }) => <tab.icon size={20} color={color} />,
+                        tabBarLabel: ({ color }) => <Text style={{ ...styles.label, color }}>{tab.label}</Text>,
+                    }}
+                />
+            ))}
         </Tabs>
     )
 }
