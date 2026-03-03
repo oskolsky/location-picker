@@ -1,17 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { SavedLocations } from '@/components/features/saved-locations/saved-locations'
 
 export default function SavedScreen() {
-    return (
-        <View style={styles.base} className="flex-1 items-center justify-center p-4">
-            <Text className="text-base leading-6">Saved Locations view</Text>
-        </View>
-    )
+    return <SavedLocations />
 }
-
-const styles = StyleSheet.create({
-    base: {
-        height: '100%',
-        padding: 16,
-        backgroundColor: '#fff',
-    },
-})

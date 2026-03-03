@@ -1,17 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { LocationPicker } from '@/components/features/location-picker/location-picker'
 
 export default function HomeScreen() {
-    return (
-        <View style={styles.base} className="flex-1 items-center justify-center p-4">
-            <Text className="text-base leading-6">Main Map view will be here</Text>
-        </View>
-    )
+    return <LocationPicker />
 }
-
-const styles = StyleSheet.create({
-    base: {
-        height: '100%',
-        padding: 16,
-        backgroundColor: '#fff',
-    },
-})

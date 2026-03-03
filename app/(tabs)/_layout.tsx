@@ -4,7 +4,7 @@ import { Tabs } from 'expo-router'
 import { CompassIcon, HeartIcon, HouseIcon, InfoIcon } from 'lucide-react-native'
 
 const TABS = [
-    { name: 'index', label: 'home', icon: HouseIcon },
+    { name: 'index', label: 'Home', icon: HouseIcon },
     { name: 'saved', label: 'Saved', icon: HeartIcon },
     { name: 'converter', label: 'Converter', icon: CompassIcon },
     { name: 'about', label: 'About', icon: InfoIcon },

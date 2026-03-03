@@ -2,15 +2,18 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { Stack } from 'expo-router'
 
-import { Header } from '@/components/layout/header'
+import { OverlayProvider } from '@/components/providers/overlay-provider'
+import { Header } from '@/components/ui/header'
 
 export default function RootLayout() {
     return (
         <SafeAreaProvider>
-            <Header />
-            <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="(tabs)" />
-            </Stack>
+            <OverlayProvider>
+                <Header />
+                <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="(tabs)" />
+                </Stack>
+            </OverlayProvider>
         </SafeAreaProvider>
     )
 }
