@@ -1,11 +1,11 @@
 import { SearchInput } from '@/components/ui/search-input'
 
-export const LocationPickerSearch = () => {
+export const SavedLocationsSearch = () => {
     return (
         <SearchInput
             value=""
-            placeholder="Enter location or coordinates"
-            variant="gray"
+            placeholder="Search by name..."
+            variant="white"
             isLoading={false}
             onChange={() => {}}
             onClear={() => {}}

@@ -25,7 +25,7 @@ export const LocationActionsCopyButton = ({ link }: LocationActionsCopyButtonPro
     }
 
     return (
-        <Button onPress={handleCopy}>
+        <Button variant="minor" onPress={handleCopy}>
             {copied ? (
                 <View style={styles.base}>
                     <CheckIcon size={16} color="#16A34A" />

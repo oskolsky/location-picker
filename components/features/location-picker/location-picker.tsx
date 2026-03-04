@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { Coordinates } from '@/utils/types'
+import { usePlaceStore } from '@/utils/stores'
 
 import { LocationPickerControls } from './components/location-picker-controls'
 import { LocationPickerMap } from './components/location-picker-map'
@@ -9,10 +8,8 @@ import { LocationPickerSaveButton } from './components/location-picker-save-butt
 import { LocationPickerSearch } from './components/location-picker-search'
 
 export const LocationPicker = () => {
-    const [coordinates, setCoordinates] = useState<Coordinates>({
-        lat: 51.47722,
-        lng: 0.0,
-    })
+    const coordinates = usePlaceStore(state => state.coordinates)
+    const setCoordinates = usePlaceStore(state => state.setCoordinates)
 
     return (
         <View style={styles.base}>

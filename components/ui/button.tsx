@@ -3,24 +3,24 @@ import { Pressable, StyleSheet, Text } from 'react-native'
 
 type ButtonProps = {
     children: ReactNode
-    variant?: 'orange' | 'gray'
+    variant: 'major' | 'minor'
     disabled?: boolean
     onPress?: () => void
 }
 
-export const Button = ({ children, variant = 'gray', disabled, onPress }: ButtonProps) => {
+export const Button = ({ children, variant, disabled, onPress }: ButtonProps) => {
     return (
         <Pressable
             onPress={onPress}
             disabled={disabled}
             style={({ pressed }) => [
                 styles.base,
-                variant === 'orange' ? styles.orange : styles.gray,
-                pressed && !disabled ? (variant === 'orange' ? styles.orangePressed : styles.grayPressed) : null,
+                variant === 'major' ? styles.orange : styles.gray,
+                pressed && !disabled ? (variant === 'major' ? styles.orangePressed : styles.grayPressed) : null,
                 disabled ? styles.disabled : null,
             ]}
         >
-            <Text style={[styles.text, variant === 'gray' ? styles.grayText : null]}>{children}</Text>
+            <Text style={[styles.text, variant === 'minor' ? styles.grayText : null]}>{children}</Text>
         </Pressable>
     )
 }

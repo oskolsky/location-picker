@@ -28,10 +28,12 @@ export const EditLocation = () => {
 
             <View style={styles.body}>
                 <Input placeholder="Location name" value="" onChangeText={text => {}} />
-                <Button variant="orange" onPress={() => {}}>
+                <Button variant="major" onPress={() => {}}>
                     Save changes
                 </Button>
-                <Button onPress={handleDelete}>Delete location</Button>
+                <Button variant="minor" onPress={handleDelete}>
+                    Delete location
+                </Button>
             </View>
         </View>
     )

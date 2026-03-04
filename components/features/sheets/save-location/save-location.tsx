@@ -4,8 +4,9 @@ import { StyleSheet, Text, View } from 'react-native'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { addPlace } from '@/utils/db'
-import { Coordinates, Place } from '@/utils/types'
+import { generateDefaultName } from '@/utils/helpers'
+import { usePlaceStore } from '@/utils/stores'
+import { Coordinates } from '@/utils/types'
 
 type SaveLocationProps = {
     coordinates: Coordinates
@@ -16,23 +17,10 @@ export const SaveLocation = ({ coordinates }: SaveLocationProps) => {
 
     const [name, setName] = useState(generateDefaultName())
     const [error, setError] = useState<string | null>(null)
-    const [loading, setLoading] = useState(false)
 
-    function generateDefaultName() {
-        const now = new Date()
-        const date = now.toLocaleDateString(undefined, {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        })
-        const time = now.toLocaleTimeString(undefined, {
-            hour: '2-digit',
-            minute: '2-digit',
-        })
-        return `${date} • ${time}`
-    }
+    const addPlace = usePlaceStore(state => state.add)
 
-    const savePlace = async () => {
+    const handleSave = async () => {
         const trimmed = name.trim()
 
         if (!trimmed) {
@@ -41,23 +29,15 @@ export const SaveLocation = ({ coordinates }: SaveLocationProps) => {
         }
 
         try {
-            setLoading(true)
-
-            const place: Omit<Place, 'id'> = {
-                name: trimmed,
-                coordinates: coordinates,
-                pinned: false,
-                createdAt: Date.now(),
-                pinnedAt: undefined,
-            }
-
-            await addPlace(place)
+            await addPlace({ name: trimmed, coordinates })
             overlay.close()
         } catch (err) {
             console.error('Failed to save location', err)
-        } finally {
-            setLoading(false)
         }
+    }
+
+    const handleCancel = () => {
+        overlay.close()
     }
 
     return (
@@ -77,8 +57,11 @@ export const SaveLocation = ({ coordinates }: SaveLocationProps) => {
                     }}
                     error={error}
                 />
-                <Button onPress={savePlace} disabled={loading} variant="orange">
+                <Button onPress={handleSave} variant="major">
                     Save
+                </Button>
+                <Button onPress={handleCancel} variant="minor">
+                    Cancel
                 </Button>
             </View>
         </View>

@@ -18,10 +18,10 @@ export const Confirmation = ({ title, message, onConfirm, onCancel }: Confirmati
             </View>
 
             <View style={styles.body}>
-                <Button variant="orange" onPress={onConfirm}>
+                <Button variant="major" onPress={onConfirm}>
                     Confirm
                 </Button>
-                <Button variant="gray" onPress={onCancel}>
+                <Button variant="minor" onPress={onCancel}>
                     Cancel
                 </Button>
             </View>

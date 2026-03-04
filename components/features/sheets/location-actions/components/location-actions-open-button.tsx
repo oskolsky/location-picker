@@ -22,7 +22,7 @@ export const LocationActionsOpenButton = ({ link }: LocationActionsOpenButtonPro
     }
 
     return (
-        <Button variant="orange" onPress={handlePress}>
+        <Button variant="major" onPress={handlePress}>
             Open
         </Button>
     )

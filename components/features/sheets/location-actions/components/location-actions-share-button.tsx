@@ -16,5 +16,9 @@ export const LocationActionsShareButton = ({ link }: LocationActionsShareButtonP
         }
     }
 
-    return <Button onPress={handleShare}>Share</Button>
+    return (
+        <Button variant="minor" onPress={handleShare}>
+            Share
+        </Button>
+    )
 }

@@ -5,27 +5,28 @@ import { RadarIcon, SearchIcon, XIcon } from 'lucide-react-native'
 type SearchInputProps = {
     value: string
     placeholder: string
+    variant?: 'gray' | 'white'
     isLoading: boolean
     onChange: (value: string) => void
     onClear: () => void
     onFocus?: () => void
 }
 
-export const SearchInput = ({ value, placeholder, isLoading, onChange, onClear, onFocus }: SearchInputProps) => {
+export const SearchInput = (props: SearchInputProps) => {
     return (
-        <View style={styles.base}>
-            {isLoading ? <RadarIcon size={20} strokeWidth={1.5} /> : <SearchIcon size={20} strokeWidth={1.5} />}
+        <View style={[styles.base, props.variant === 'white' ? styles.whiteVariant : styles.grayVariant]}>
+            {props.isLoading ? <RadarIcon size={20} strokeWidth={1.5} /> : <SearchIcon size={20} strokeWidth={1.5} />}
 
             <TextInput
                 style={styles.input}
-                placeholder={placeholder}
-                value={value}
-                onChangeText={onChange}
-                onFocus={onFocus}
+                placeholder={props.placeholder}
+                value={props.value}
+                onChangeText={props.onChange}
+                onFocus={props.onFocus}
             />
 
-            {value ? (
-                <Pressable onPress={onClear}>
+            {props.value ? (
+                <Pressable onPress={props.onClear}>
                     <XIcon size={20} />
                 </Pressable>
             ) : null}
@@ -41,6 +42,17 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         backgroundColor: '#F3F4F6',
         paddingHorizontal: 12,
+        boxSizing: 'border-box',
+    },
+    grayVariant: {
+        backgroundColor: '#F3F4F6',
+        borderWidth: 1,
+        borderColor: '#F3F4F6',
+    },
+    whiteVariant: {
+        backgroundColor: '#FFFFFF',
+        borderWidth: 1,
+        borderColor: '#D1D5DB',
     },
     input: {
         flex: 1,

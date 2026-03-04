@@ -1,10 +1,10 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 
-import { Button } from '@/components/ui/button'
 import { NAVIGATORS } from '@/utils/constants'
 import { Navigator } from '@/utils/enums'
 import { Coordinates } from '@/utils/types'
 
+import { LocationActionsCancelButton } from './components/location-actions-cancel-button'
 import { LocationActionsCopyButton } from './components/location-actions-copy-button'
 import { LocationActionsOpenButton } from './components/location-actions-open-button'
 import { LocationActionsShareButton } from './components/location-actions-share-button'
@@ -34,6 +34,7 @@ export const LocationActions = ({ navigator, coordinates }: LocationActionsProps
                 <LocationActionsOpenButton link={link} />
                 <LocationActionsCopyButton link={link} />
                 <LocationActionsShareButton link={link} />
+                <LocationActionsCancelButton />
             </View>
         </View>
     )

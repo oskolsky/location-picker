@@ -15,7 +15,7 @@ export const LocationPickerSaveButton = ({ coordinates }: LocationPickerSaveButt
     }
 
     return (
-        <Button variant="orange" onPress={handleSave}>
+        <Button variant="major" onPress={handleSave}>
             Save location
         </Button>
     )
