@@ -3,12 +3,18 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { LocationActions } from '@/components/features/sheets/location-actions/location-actions'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { NAVIGATORS } from '@/utils/constants'
+import { Navigator } from '@/utils/enums'
+import { Coordinates } from '@/utils/types'
 
-export const LocationPickerControls = () => {
+type LocationPickerControlsProps = {
+    coordinates: Coordinates
+}
+
+export const LocationPickerControls = ({ coordinates }: LocationPickerControlsProps) => {
     const overlay = useOverlay()
 
-    const handlePress = (navId: string) => {
-        overlay.open(<LocationActions navigator={navId as any} />)
+    const handlePress = (navigator: Navigator) => {
+        overlay.open(<LocationActions navigator={navigator} coordinates={coordinates} />)
     }
 
     return (
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 12,
-        fontWeight: '600',
+        fontWeight: '700',
         textAlign: 'center',
         color: '#111827',
     },

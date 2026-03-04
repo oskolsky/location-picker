@@ -3,30 +3,37 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import { Button } from '@/components/ui/button'
 import { NAVIGATORS } from '@/utils/constants'
 import { Navigator } from '@/utils/enums'
+import { Coordinates } from '@/utils/types'
+
+import { LocationActionsCopyButton } from './components/location-actions-copy-button'
+import { LocationActionsOpenButton } from './components/location-actions-open-button'
+import { LocationActionsShareButton } from './components/location-actions-share-button'
 
 type LocationActionsProps = {
     navigator: Navigator
+    coordinates: Coordinates
 }
 
-export const LocationActions = ({ navigator }: LocationActionsProps) => {
-    const activeNav = NAVIGATORS.find(n => n.id === navigator)!
+export const LocationActions = ({ navigator, coordinates }: LocationActionsProps) => {
+    const activeNavigator = NAVIGATORS.find(nav => nav.id === navigator)!
+    const link = activeNavigator.link(coordinates.lat, coordinates.lng)
 
     return (
         <View style={styles.base}>
             <View style={styles.header}>
                 <View style={styles.iconWrapper}>
-                    <Image source={activeNav.image} style={styles.icon} resizeMode="contain" />
+                    <Image source={activeNavigator.image} style={styles.icon} resizeMode="contain" />
                 </View>
                 <View style={styles.titleWrapper}>
-                    <Text style={styles.title}>{activeNav.name}</Text>
+                    <Text style={styles.title}>{activeNavigator.name}</Text>
                     <Text style={styles.message}>Choose an action</Text>
                 </View>
             </View>
 
             <View style={styles.body}>
-                <Button variant="orange">Open</Button>
-                <Button variant="gray">Copy link</Button>
-                <Button variant="gray">Share</Button>
+                <LocationActionsOpenButton link={link} />
+                <LocationActionsCopyButton link={link} />
+                <LocationActionsShareButton link={link} />
             </View>
         </View>
     )

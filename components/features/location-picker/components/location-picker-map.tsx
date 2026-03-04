@@ -4,23 +4,34 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 
 import PinShadow from '@/assets/images/pin-shadow.svg'
 import Pin from '@/assets/images/pin.svg'
+import { Coordinates } from '@/utils/types'
 
-export const LocationPickerMap = () => {
+type LocationPickerMapProps = {
+    coordinates: Coordinates
+    onRegionChangeComplete: (coordinates: Coordinates) => void
+}
+
+export const LocationPickerMap = ({ coordinates, onRegionChangeComplete }: LocationPickerMapProps) => {
     const [isMoving, setIsMoving] = useState(false)
 
     return (
         <View style={styles.base}>
             <MapView
                 style={StyleSheet.absoluteFill}
+                provider={PROVIDER_GOOGLE}
                 initialRegion={{
-                    latitude: 51.47722,
-                    longitude: 0.0,
+                    latitude: coordinates.lat,
+                    longitude: coordinates.lng,
                     latitudeDelta: 20,
                     longitudeDelta: 20,
                 }}
-                provider={PROVIDER_GOOGLE}
                 onRegionChange={() => setIsMoving(true)}
-                onRegionChangeComplete={() => setIsMoving(false)}
+                onRegionChangeComplete={r => {
+                    setIsMoving(false)
+                    onRegionChangeComplete({ lat: r.latitude, lng: r.longitude })
+                }}
+                showsUserLocation
+                showsMyLocationButton={true}
             />
 
             <View pointerEvents="none" style={styles.pinWrapper}>
@@ -51,9 +62,6 @@ const styles = StyleSheet.create({
         width: 27,
         height: 41,
         resizeMode: 'contain',
-    },
-    pinIsMoving: {
-        bottom: 0,
     },
     pinShadow: {
         position: 'absolute',

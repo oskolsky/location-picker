@@ -45,10 +45,7 @@ export const SaveLocation = ({ coordinates }: SaveLocationProps) => {
 
             const place: Omit<Place, 'id'> = {
                 name: trimmed,
-                coordinates: {
-                    lat: Number(coordinates.lat),
-                    lng: Number(coordinates.lng),
-                },
+                coordinates: coordinates,
                 pinned: false,
                 createdAt: Date.now(),
                 pinnedAt: undefined,
