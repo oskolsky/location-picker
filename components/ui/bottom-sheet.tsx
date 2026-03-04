@@ -1,6 +1,9 @@
-import { ReactNode, useEffect, useRef } from 'react'
-import { Animated, Dimensions, PanResponder, Pressable, StyleSheet, View } from 'react-native'
+import { ReactNode } from 'react'
+import { Dimensions, PanResponder, Pressable, StyleSheet, View } from 'react-native'
+import { useKeyboardHandler } from 'react-native-keyboard-controller'
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { scheduleOnRN } from 'react-native-worklets'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 
@@ -12,80 +15,75 @@ type BottomSheetProps = {
 export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
     const insets = useSafeAreaInsets()
 
-    const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current
-    const overlayOpacity = useRef(new Animated.Value(0)).current
+    const dragY = useSharedValue(SCREEN_HEIGHT)
+    const keyboardHeight = useSharedValue(0)
+    const overlayOpacity = useSharedValue(0)
 
-    useEffect(() => {
-        Animated.parallel([
-            Animated.timing(translateY, {
-                toValue: 0,
-                duration: 300,
-                useNativeDriver: true,
-            }),
-            Animated.timing(overlayOpacity, {
-                toValue: 1,
-                duration: 300,
-                useNativeDriver: true,
-            }),
-        ]).start()
-    }, [])
+    // Keyboard handling
+    useKeyboardHandler(
+        {
+            onMove: event => {
+                'worklet'
+                keyboardHeight.value = Math.max(event.height - insets.bottom, 0)
+            },
+        },
+        [],
+    )
 
+    // Animated styles
+    const sheetStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateY: dragY.value - keyboardHeight.value,
+                },
+            ],
+            paddingBottom: insets.bottom + 24,
+        }
+    })
+
+    const overlayStyle = useAnimatedStyle(() => ({
+        opacity: overlayOpacity.value,
+    }))
+
+    // Open animation
+    dragY.value = withTiming(0, { duration: 300 })
+    overlayOpacity.value = withTiming(1, { duration: 300 })
+
+    // Close function
     const closeWithAnimation = () => {
-        Animated.parallel([
-            Animated.timing(translateY, {
-                toValue: SCREEN_HEIGHT,
-                duration: 250,
-                useNativeDriver: true,
-            }),
-            Animated.timing(overlayOpacity, {
-                toValue: 0,
-                duration: 250,
-                useNativeDriver: true,
-            }),
-        ]).start(onClose)
+        overlayOpacity.value = withTiming(0, { duration: 250 })
+        dragY.value = withTiming(SCREEN_HEIGHT, { duration: 250 }, () => {
+            scheduleOnRN(onClose)
+        })
     }
 
-    const panResponder = useRef(
-        PanResponder.create({
-            onMoveShouldSetPanResponder: (_, gesture) => {
-                return gesture.dy > 5
-            },
-            onPanResponderMove: (_, gesture) => {
-                if (gesture.dy > 0) {
-                    translateY.setValue(gesture.dy)
-                }
-            },
-            onPanResponderRelease: (_, gesture) => {
-                if (gesture.dy > 120) {
-                    closeWithAnimation()
-                } else {
-                    Animated.spring(translateY, {
-                        toValue: 0,
-                        useNativeDriver: true,
-                    }).start()
-                }
-            },
-        }),
-    ).current
+    // PanResponder for drag
+    const panResponder = PanResponder.create({
+        onMoveShouldSetPanResponder: (_, gesture) => {
+            return gesture.dy > 5
+        },
+        onPanResponderMove: (_, gesture) => {
+            if (gesture.dy > 0) dragY.value = gesture.dy
+        },
+        onPanResponderRelease: (_, gesture) => {
+            if (gesture.dy > 120) {
+                scheduleOnRN(closeWithAnimation)
+            } else {
+                dragY.value = withSpring(0)
+            }
+        },
+    })
 
     return (
         <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
             {/* Overlay */}
             <Pressable style={StyleSheet.absoluteFill} onPress={closeWithAnimation}>
-                <Animated.View style={[styles.overlay, { opacity: overlayOpacity }]} />
+                <Animated.View style={[styles.overlay, overlayStyle]} />
             </Pressable>
 
             {/* Sheet */}
-            <Animated.View
-                {...panResponder.panHandlers}
-                style={[
-                    styles.sheet,
-                    {
-                        paddingBottom: insets.bottom + 24,
-                        transform: [{ translateY }],
-                    },
-                ]}
-            >
+            <Animated.View {...panResponder.panHandlers} style={[styles.sheet, sheetStyle]}>
                 <View style={styles.handle} />
                 {content}
             </Animated.View>

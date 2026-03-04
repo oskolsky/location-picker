@@ -1,3 +1,4 @@
+import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { Stack } from 'expo-router'
@@ -8,12 +9,15 @@ import { Header } from '@/components/ui/header'
 export default function RootLayout() {
     return (
         <SafeAreaProvider>
-            <OverlayProvider>
-                <Header />
-                <Stack screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="(tabs)" />
-                </Stack>
-            </OverlayProvider>
+            <KeyboardProvider>
+                <OverlayProvider>
+                    <Header />
+
+                    <Stack screenOptions={{ headerShown: false }}>
+                        <Stack.Screen name="(tabs)" />
+                    </Stack>
+                </OverlayProvider>
+            </KeyboardProvider>
         </SafeAreaProvider>
     )
 }
