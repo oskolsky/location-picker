@@ -23,12 +23,9 @@ export const LocationPickerMap = () => {
                 onRegionChangeComplete={() => setIsMoving(false)}
             />
 
-            <View style={styles.verticalLine} pointerEvents="none" />
-            <View style={styles.horizontalLine} pointerEvents="none" />
-
             <View pointerEvents="none" style={styles.pinWrapper}>
-                <PinShadow width={27} height={41} />
-                <Pin width={27} height={41} style={isMoving ? { marginTop: -8 } : undefined} />
+                <PinShadow width={27} height={41} style={styles.pinShadow} />
+                <Pin width={27} height={41} style={[styles.pin, isMoving ? { bottom: 0 } : undefined]} />
             </View>
         </View>
     )
@@ -41,31 +38,25 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     pinWrapper: {
+        width: 27,
+        height: 41,
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: [{ translateX: -13.5 }, { translateY: -41 }],
     },
     pin: {
+        position: 'absolute',
+        bottom: -6,
         width: 27,
         height: 41,
         resizeMode: 'contain',
-        position: 'absolute',
     },
-    verticalLine: {
-        position: 'absolute',
-        top: 0,
+    pinIsMoving: {
         bottom: 0,
-        left: '50%',
-        width: 1,
-        backgroundColor: 'red',
     },
-    horizontalLine: {
+    pinShadow: {
         position: 'absolute',
-        left: 0,
-        right: 0,
-        top: '50%',
-        height: 1,
-        backgroundColor: 'red',
+        bottom: -7,
     },
 })
