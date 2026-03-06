@@ -1,22 +1,38 @@
+import { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-import { Confirmation } from '@/components/features/sheets/confirmation/confirmation'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { usePlaceStore } from '@/utils/stores'
+import { Place } from '@/utils/types'
 
-export const EditLocation = () => {
+type EditLocationProps = {
+    place: Place
+    onCancel: () => void
+}
+
+export const EditLocation = ({ place, onCancel }: EditLocationProps) => {
     const overlay = useOverlay()
+    const updatePlace = usePlaceStore(state => state.update)
 
-    const handleDelete = () => {
-        overlay.open(
-            <Confirmation
-                title="Delete location"
-                message="Are you sure you want to delete this location?"
-                onConfirm={() => {}}
-                onCancel={() => overlay.open(<EditLocation />)}
-            />,
-        )
+    const [name, setName] = useState(place.name)
+    const [error, setError] = useState<string | null>(null)
+
+    const handleSave = async () => {
+        const trimmed = name.trim()
+
+        if (!trimmed) {
+            setError('Location name cannot be empty')
+            return
+        }
+
+        try {
+            await updatePlace({ ...place, name: trimmed })
+            overlay.close()
+        } catch (err) {
+            console.error('Failed to save location', err)
+        }
     }
 
     return (
@@ -27,12 +43,20 @@ export const EditLocation = () => {
             </View>
 
             <View style={styles.body}>
-                <Input placeholder="Location name" value="" onChangeText={text => {}} />
-                <Button variant="major" onPress={() => {}}>
+                <Input
+                    value={name}
+                    error={error}
+                    placeholder="Location name"
+                    onChangeText={text => {
+                        setName(text)
+                        if (error) setError(null)
+                    }}
+                />
+                <Button variant="major" onPress={handleSave}>
                     Save changes
                 </Button>
-                <Button variant="minor" onPress={handleDelete}>
-                    Delete location
+                <Button variant="minor" onPress={onCancel}>
+                    Cancel
                 </Button>
             </View>
         </View>

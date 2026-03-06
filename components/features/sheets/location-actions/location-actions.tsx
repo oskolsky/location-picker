@@ -16,7 +16,7 @@ type LocationActionsProps = {
 
 export const LocationActions = ({ navigator, coordinates }: LocationActionsProps) => {
     const activeNavigator = NAVIGATORS.find(nav => nav.id === navigator)!
-    const link = activeNavigator.link(coordinates.lat, coordinates.lng)
+    const link = activeNavigator.buildLink(coordinates.lat, coordinates.lng)
 
     return (
         <View style={styles.base}>

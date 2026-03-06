@@ -1,17 +1,21 @@
 import { SaveLocation } from '@/components/features/sheets/save-location/save-location'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
-import { Coordinates } from '@/utils/types'
+import { usePlaceStore } from '@/utils/stores'
 
-type LocationPickerSaveButtonProps = {
-    coordinates: Coordinates
-}
-
-export const LocationPickerSaveButton = ({ coordinates }: LocationPickerSaveButtonProps) => {
+export const LocationPickerSaveButton = () => {
     const overlay = useOverlay()
+    const region = usePlaceStore(state => state.region)
 
     const handleSave = () => {
-        overlay.open(<SaveLocation coordinates={coordinates} />)
+        overlay.open(
+            <SaveLocation
+                coordinates={{
+                    lat: region.latitude,
+                    lng: region.longitude,
+                }}
+            />,
+        )
     }
 
     return (

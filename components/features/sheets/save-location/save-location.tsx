@@ -14,11 +14,10 @@ type SaveLocationProps = {
 
 export const SaveLocation = ({ coordinates }: SaveLocationProps) => {
     const overlay = useOverlay()
+    const addPlace = usePlaceStore(state => state.add)
 
     const [name, setName] = useState(generateDefaultName())
     const [error, setError] = useState<string | null>(null)
-
-    const addPlace = usePlaceStore(state => state.add)
 
     const handleSave = async () => {
         const trimmed = name.trim()
@@ -49,13 +48,13 @@ export const SaveLocation = ({ coordinates }: SaveLocationProps) => {
 
             <View style={styles.body}>
                 <Input
-                    placeholder="Location name"
                     value={name}
+                    error={error}
+                    placeholder="Location name"
                     onChangeText={text => {
                         setName(text)
                         if (error) setError(null)
                     }}
-                    error={error}
                 />
                 <Button onPress={handleSave} variant="major">
                     Save

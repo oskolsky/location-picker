@@ -1,21 +1,24 @@
+import { Region } from 'react-native-maps'
+
 import { create } from 'zustand'
 
 import * as db from '@/utils/db'
-import { Coordinates, Place } from '@/utils/types'
+import { Place } from '@/utils/types'
 
 type PlaceStore = {
     places: Place[]
-    coordinates: Coordinates
+    region: Region
+
     load: () => Promise<void>
     add: (place: Omit<Place, 'id' | 'createdAt' | 'pinnedAt'>) => Promise<void>
     update: (place: Place) => Promise<void>
     delete: (id: number) => Promise<void>
-    setCoordinates: (coords: Coordinates) => void
+    setRegion: (region: PlaceStore['region']) => void
 }
 
 export const usePlaceStore = create<PlaceStore>((set, get) => ({
     places: [],
-    coordinates: { lat: 51.47722, lng: 0.0 },
+    region: { latitude: 51.47722, longitude: 0.0, latitudeDelta: 20, longitudeDelta: 20 },
 
     load: async () => {
         const places = await db.getPlaces()
@@ -40,5 +43,5 @@ export const usePlaceStore = create<PlaceStore>((set, get) => ({
         set({ places })
     },
 
-    setCoordinates: coords => set({ coordinates: coords }),
+    setRegion: region => set({ region }),
 }))

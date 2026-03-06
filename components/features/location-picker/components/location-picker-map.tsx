@@ -4,14 +4,11 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 
 import PinShadow from '@/assets/images/pin-shadow.svg'
 import Pin from '@/assets/images/pin.svg'
-import { Coordinates } from '@/utils/types'
+import { usePlaceStore } from '@/utils/stores'
 
-type LocationPickerMapProps = {
-    coordinates: Coordinates
-    onRegionChangeComplete: (coordinates: Coordinates) => void
-}
-
-export const LocationPickerMap = ({ coordinates, onRegionChangeComplete }: LocationPickerMapProps) => {
+export const LocationPickerMap = () => {
+    const region = usePlaceStore(state => state.region)
+    const setRegion = usePlaceStore(state => state.setRegion)
     const [isMoving, setIsMoving] = useState(false)
 
     return (
@@ -19,16 +16,11 @@ export const LocationPickerMap = ({ coordinates, onRegionChangeComplete }: Locat
             <MapView
                 style={StyleSheet.absoluteFill}
                 provider={PROVIDER_GOOGLE}
-                initialRegion={{
-                    latitude: coordinates.lat,
-                    longitude: coordinates.lng,
-                    latitudeDelta: 20,
-                    longitudeDelta: 20,
-                }}
+                region={region}
                 onRegionChange={() => setIsMoving(true)}
-                onRegionChangeComplete={r => {
+                onRegionChangeComplete={region => {
                     setIsMoving(false)
-                    onRegionChangeComplete({ lat: r.latitude, lng: r.longitude })
+                    setRegion(region)
                 }}
                 showsUserLocation
                 showsMyLocationButton={true}

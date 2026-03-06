@@ -4,17 +4,22 @@ import { LocationActions } from '@/components/features/sheets/location-actions/l
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { NAVIGATORS } from '@/utils/constants'
 import { Navigator } from '@/utils/enums'
-import { Coordinates } from '@/utils/types'
+import { usePlaceStore } from '@/utils/stores'
 
-type LocationPickerControlsProps = {
-    coordinates: Coordinates
-}
-
-export const LocationPickerControls = ({ coordinates }: LocationPickerControlsProps) => {
+export const LocationPickerControls = () => {
     const overlay = useOverlay()
+    const region = usePlaceStore(state => state.region)
 
     const handlePress = (navigator: Navigator) => {
-        overlay.open(<LocationActions navigator={navigator} coordinates={coordinates} />)
+        overlay.open(
+            <LocationActions
+                navigator={navigator}
+                coordinates={{
+                    lat: region.latitude,
+                    lng: region.longitude,
+                }}
+            />,
+        )
     }
 
     return (

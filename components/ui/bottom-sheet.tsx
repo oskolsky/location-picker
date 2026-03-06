@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { Dimensions, PanResponder, Pressable, StyleSheet, View } from 'react-native'
 import { useKeyboardHandler } from 'react-native-keyboard-controller'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
@@ -19,7 +19,6 @@ export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
     const keyboardHeight = useSharedValue(0)
     const overlayOpacity = useSharedValue(0)
 
-    // Keyboard handling
     useKeyboardHandler(
         {
             onMove: event => {
@@ -30,27 +29,20 @@ export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
         [],
     )
 
-    // Animated styles
-    const sheetStyle = useAnimatedStyle(() => {
-        return {
-            transform: [
-                {
-                    translateY: dragY.value - keyboardHeight.value,
-                },
-            ],
-            paddingBottom: insets.bottom + 24,
-        }
-    })
+    const sheetStyle = useAnimatedStyle(() => ({
+        transform: [{ translateY: dragY.value - keyboardHeight.value }],
+        paddingBottom: insets.bottom + 24,
+    }))
 
     const overlayStyle = useAnimatedStyle(() => ({
         opacity: overlayOpacity.value,
     }))
 
-    // Open animation
-    dragY.value = withTiming(0, { duration: 300 })
-    overlayOpacity.value = withTiming(1, { duration: 300 })
+    useEffect(() => {
+        dragY.value = withTiming(0, { duration: 300 })
+        overlayOpacity.value = withTiming(1, { duration: 300 })
+    }, [])
 
-    // Close function
     const closeWithAnimation = () => {
         overlayOpacity.value = withTiming(0, { duration: 250 })
         dragY.value = withTiming(SCREEN_HEIGHT, { duration: 250 }, () => {
@@ -58,11 +50,8 @@ export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
         })
     }
 
-    // PanResponder for drag
     const panResponder = PanResponder.create({
-        onMoveShouldSetPanResponder: (_, gesture) => {
-            return gesture.dy > 5
-        },
+        onMoveShouldSetPanResponder: (_, gesture) => gesture.dy > 5,
         onPanResponderMove: (_, gesture) => {
             if (gesture.dy > 0) dragY.value = gesture.dy
         },
@@ -77,12 +66,10 @@ export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
 
     return (
         <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-            {/* Overlay */}
             <Pressable style={StyleSheet.absoluteFill} onPress={closeWithAnimation}>
                 <Animated.View style={[styles.overlay, overlayStyle]} />
             </Pressable>
 
-            {/* Sheet */}
             <Animated.View {...panResponder.panHandlers} style={[styles.sheet, sheetStyle]}>
                 <View style={styles.handle} />
                 {content}

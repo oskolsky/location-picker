@@ -1,39 +1,81 @@
-import { useEffect, useState } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { useEffect, useMemo, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 
+import { Divider } from '@/components/ui/divider'
+import { SearchInput } from '@/components/ui/search-input'
 import { usePlaceStore } from '@/utils/stores'
 
 import { SavedLocationsItem } from './components/saved-locations-item'
-import { SavedLocationsSearch } from './components/saved-locations-search'
 
 export const SavedLocations = () => {
     const places = usePlaceStore(state => state.places)
     const loadPlaces = usePlaceStore(state => state.load)
 
+    const [search, setSearch] = useState('')
+
     useEffect(() => {
         loadPlaces()
     }, [])
 
-    const regular = places.filter(place => !place.pinned).sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))
+    const { pinnedPlaces, regularPlaces } = useMemo(() => {
+        let result = [...places]
+
+        if (search.trim()) {
+            result = result.filter(place => place.name.toLowerCase().includes(search.toLowerCase()))
+        }
+
+        const pinned = result.filter(place => place.pinned).sort((a, b) => (b.pinnedAt ?? 0) - (a.pinnedAt ?? 0))
+        const regular = result.filter(place => !place.pinned).sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))
+
+        return {
+            pinnedPlaces: pinned,
+            regularPlaces: regular,
+        }
+    }, [places, search])
+
+    const handleClear = () => {
+        setSearch('')
+    }
 
     return (
         <View style={styles.base}>
-            <View style={styles.search}>
-                <SavedLocationsSearch />
-            </View>
+            {places.length > 0 && (
+                <View style={styles.search}>
+                    <SearchInput
+                        value={search}
+                        placeholder="Search by name..."
+                        variant="white"
+                        isLoading={false}
+                        onChange={setSearch}
+                        onClear={handleClear}
+                    />
+                </View>
+            )}
 
-            <FlatList
-                data={regular}
-                keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => <SavedLocationsItem place={item} />}
-                ListEmptyComponent={() =>
-                    places.length === 0 ? (
-                        <Text style={styles.emptyText}>You have no saved locations yet.</Text>
-                    ) : (
-                        <Text style={styles.emptyText}>No locations match your search.</Text>
-                    )
-                }
-            />
+            <ScrollView>
+                <View style={styles.list}>
+                    {pinnedPlaces.length > 0 && (
+                        <>
+                            {pinnedPlaces.map(place => (
+                                <SavedLocationsItem key={place.id} place={place} />
+                            ))}
+                            <Divider label="Pinned" />
+                        </>
+                    )}
+
+                    {regularPlaces.map(place => (
+                        <SavedLocationsItem key={place.id} place={place} />
+                    ))}
+
+                    {places.length > 0 && pinnedPlaces.length === 0 && regularPlaces.length === 0 && (
+                        <Text style={styles.empty}>No locations match your search.</Text>
+                    )}
+
+                    {places.length === 0 && (
+                        <Text style={[styles.empty, { paddingVertical: 16 }]}>You have no saved locations yet.</Text>
+                    )}
+                </View>
+            </ScrollView>
         </View>
     )
 }
@@ -42,14 +84,19 @@ const styles = StyleSheet.create({
     base: {
         flex: 1,
         backgroundColor: '#fff',
-        paddingBottom: 8,
     },
     search: {
         padding: 16,
     },
-    emptyText: {
-        textAlign: 'center',
-        color: '#6B7280',
-        marginTop: 16,
+    list: {
+        paddingHorizontal: 16,
+        paddingBottom: 16,
+        flexDirection: 'column',
+        gap: 8,
+    },
+    empty: {
+        fontSize: 14,
+        lineHeight: 20,
+        color: '#6b7280',
     },
 })
