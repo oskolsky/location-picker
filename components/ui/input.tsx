@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, TextInput, TextInputProps, View } from 'react-native'
+import { useState } from 'react'
+import { StyleSheet, Text, TextInput, TextInputProps, View } from 'react-native'
 
 import { TriangleAlertIcon } from 'lucide-react-native'
 
@@ -7,10 +8,27 @@ type InputProps = TextInputProps & {
 }
 
 export const Input = ({ error, ...rest }: InputProps) => {
+    const [isFocused, setIsFocused] = useState(false)
+
     return (
         <View style={styles.base}>
             <View style={styles.inputWrapper}>
-                <TextInput {...rest} style={[styles.input, error ? styles.errorInput : null]} />
+                <TextInput
+                    {...rest}
+                    style={[
+                        styles.input,
+                        error ? styles.errorInput : null,
+                        isFocused && !error ? styles.focusedInput : null,
+                    ]}
+                    onFocus={e => {
+                        setIsFocused(true)
+                        rest.onFocus?.(e)
+                    }}
+                    onBlur={e => {
+                        setIsFocused(false)
+                        rest.onBlur?.(e)
+                    }}
+                />
                 {error && (
                     <View style={styles.iconWrapper}>
                         <TriangleAlertIcon size={16} color="#EF4444" />
@@ -41,6 +59,9 @@ const styles = StyleSheet.create({
     },
     errorInput: {
         borderColor: '#EF4444',
+    },
+    focusedInput: {
+        borderColor: '#9CA3AF', // чуть темнее серого при фокусе
     },
     iconWrapper: {
         position: 'absolute',

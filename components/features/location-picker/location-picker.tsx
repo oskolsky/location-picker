@@ -2,7 +2,6 @@ import { StyleSheet, View } from 'react-native'
 
 import { LocationPickerControls } from './components/location-picker-controls'
 import { LocationPickerMap } from './components/location-picker-map'
-import { LocationPickerSaveButton } from './components/location-picker-save-button'
 import { LocationPickerSearch } from './components/location-picker-search'
 
 export const LocationPicker = () => {
@@ -11,7 +10,6 @@ export const LocationPicker = () => {
             <LocationPickerSearch />
             <LocationPickerMap />
             <LocationPickerControls />
-            <LocationPickerSaveButton />
         </View>
     )
 }

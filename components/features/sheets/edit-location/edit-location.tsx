@@ -47,8 +47,8 @@ export const EditLocation = ({ place, onCancel }: EditLocationProps) => {
                     value={name}
                     error={error}
                     placeholder="Location name"
-                    onChangeText={text => {
-                        setName(text)
+                    onChangeText={value => {
+                        setName(value)
                         if (error) setError(null)
                     }}
                 />

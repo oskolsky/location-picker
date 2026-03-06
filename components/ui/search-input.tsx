@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Pressable, StyleSheet, TextInput, View } from 'react-native'
 
 import { RadarIcon, SearchIcon, XIcon } from 'lucide-react-native'
@@ -13,8 +14,12 @@ type SearchInputProps = {
 }
 
 export const SearchInput = (props: SearchInputProps) => {
+    const [isFocused, setIsFocused] = useState(false)
+
+    const borderColor = isFocused ? '#9CA3AF' : props.variant === 'white' ? '#D1D5DB' : '#F3F4F6'
+
     return (
-        <View style={[styles.base, props.variant === 'white' ? styles.whiteVariant : styles.grayVariant]}>
+        <View style={[styles.base, { borderColor, backgroundColor: props.variant === 'white' ? '#fff' : '#F3F4F6' }]}>
             {props.isLoading ? <RadarIcon size={20} strokeWidth={1.5} /> : <SearchIcon size={20} strokeWidth={1.5} />}
 
             <TextInput
@@ -22,7 +27,11 @@ export const SearchInput = (props: SearchInputProps) => {
                 placeholder={props.placeholder}
                 value={props.value}
                 onChangeText={props.onChange}
-                onFocus={props.onFocus}
+                onFocus={() => {
+                    setIsFocused(true)
+                    props.onFocus?.()
+                }}
+                onBlur={() => setIsFocused(false)}
             />
 
             {props.value ? (
@@ -40,19 +49,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 48,
         borderRadius: 12,
-        backgroundColor: '#F3F4F6',
         paddingHorizontal: 12,
         boxSizing: 'border-box',
-    },
-    grayVariant: {
-        backgroundColor: '#F3F4F6',
         borderWidth: 1,
-        borderColor: '#F3F4F6',
-    },
-    whiteVariant: {
-        backgroundColor: '#FFFFFF',
-        borderWidth: 1,
-        borderColor: '#D1D5DB',
     },
     input: {
         flex: 1,

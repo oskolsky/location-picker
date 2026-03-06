@@ -51,8 +51,8 @@ export const SaveLocation = ({ coordinates }: SaveLocationProps) => {
                     value={name}
                     error={error}
                     placeholder="Location name"
-                    onChangeText={text => {
-                        setName(text)
+                    onChangeText={value => {
+                        setName(value)
                         if (error) setError(null)
                     }}
                 />
