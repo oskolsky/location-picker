@@ -10,7 +10,9 @@ export const Header = () => {
                 <View style={{ paddingTop: insets?.top, paddingHorizontal: 16 }}>
                     <View style={styles.base}>
                         <MapPinCheckIcon strokeWidth={2.5} color="#000" />
-                        <Text style={styles.text}>Location Picker</Text>
+                        <Text style={styles.text}>
+                            Location <Text style={styles.subText}>Picker</Text>
+                        </Text>
                     </View>
                 </View>
             )}
@@ -31,7 +33,10 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         lineHeight: 28,
-        fontWeight: '800',
+        fontWeight: '700',
         textTransform: 'uppercase',
+    },
+    subText: {
+        color: '#F97316',
     },
 })
