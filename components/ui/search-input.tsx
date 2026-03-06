@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Pressable, StyleSheet, TextInput, View } from 'react-native'
+import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native'
 
-import { RadarIcon, SearchIcon, XIcon } from 'lucide-react-native'
+import { SearchIcon, XIcon } from 'lucide-react-native'
 
 type SearchInputProps = {
     value: string
@@ -20,7 +20,13 @@ export const SearchInput = (props: SearchInputProps) => {
 
     return (
         <View style={[styles.base, { borderColor, backgroundColor: props.variant === 'white' ? '#fff' : '#F3F4F6' }]}>
-            {props.isLoading ? <RadarIcon size={20} strokeWidth={1.5} /> : <SearchIcon size={20} strokeWidth={1.5} />}
+            <View style={styles.iconWrapper}>
+                {props.isLoading ? (
+                    <ActivityIndicator size="small" color="#2563EB" />
+                ) : (
+                    <SearchIcon size={20} strokeWidth={1.5} />
+                )}
+            </View>
 
             <TextInput
                 style={styles.input}
@@ -35,7 +41,7 @@ export const SearchInput = (props: SearchInputProps) => {
             />
 
             {props.value ? (
-                <Pressable onPress={props.onClear}>
+                <Pressable onPress={props.onClear} style={styles.clearWrapper}>
                     <XIcon size={20} />
                 </Pressable>
             ) : null}
@@ -50,8 +56,17 @@ const styles = StyleSheet.create({
         height: 48,
         borderRadius: 12,
         paddingHorizontal: 12,
-        boxSizing: 'border-box',
         borderWidth: 1,
+    },
+    iconWrapper: {
+        width: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    clearWrapper: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 4,
     },
     input: {
         flex: 1,

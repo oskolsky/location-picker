@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 
 import { Button } from '@/components/ui/button'
 import { Divider } from '@/components/ui/divider'
@@ -45,53 +45,57 @@ export const Converter = () => {
     }
 
     return (
-        <View style={styles.base}>
-            <View style={styles.textBlock}>
-                <Text style={styles.title}>GPS Coordinates Converter</Text>
-                <Text style={styles.text}>
-                    A&nbsp;simple tool to&nbsp;convert coordinates between&nbsp;DD (Decimal Degrees) and DMS (Degrees,
-                    Minutes, Seconds) formats. Enter coordinates in&nbsp;either format, and the result will
-                    be&nbsp;displayed in&nbsp;both.
-                </Text>
+        <ScrollView style={styles.base}>
+            <View style={styles.container}>
+                <View style={styles.textBlock}>
+                    <Text style={styles.title}>GPS Coordinates Converter</Text>
+                    <Text style={styles.text}>
+                        A&nbsp;simple tool to&nbsp;convert coordinates between&nbsp;DD (Decimal Degrees) and DMS
+                        (Degrees, Minutes, Seconds) formats. Enter coordinates in&nbsp;either format, and the result
+                        will be&nbsp;displayed in&nbsp;both.
+                    </Text>
+                </View>
+
+                <View style={styles.form}>
+                    <Input
+                        value={value}
+                        error={error}
+                        placeholder="Enter coordinates DD or DMS"
+                        onChangeText={val => {
+                            setValue(val)
+                            if (error) setError(null)
+                        }}
+                    />
+
+                    {coordinates ? (
+                        <Button variant="minor" onPress={handleReset}>
+                            Reset
+                        </Button>
+                    ) : (
+                        <Button variant="minor" onPress={handleConvert}>
+                            Convert
+                        </Button>
+                    )}
+
+                    {coordinates && (
+                        <>
+                            <Divider label="Result" />
+                            <ConverterResult coordinates={coordinates} />
+                        </>
+                    )}
+                </View>
             </View>
-
-            <View style={styles.form}>
-                <Input
-                    value={value}
-                    error={error}
-                    placeholder="Enter coordinates DD or DMS"
-                    onChangeText={val => {
-                        setValue(val)
-                        if (error) setError(null)
-                    }}
-                />
-
-                {coordinates ? (
-                    <Button variant="minor" onPress={handleReset}>
-                        Reset
-                    </Button>
-                ) : (
-                    <Button variant="minor" onPress={handleConvert}>
-                        Convert
-                    </Button>
-                )}
-
-                {coordinates && (
-                    <>
-                        <Divider label="Result" />
-                        <ConverterResult coordinates={coordinates} />
-                    </>
-                )}
-            </View>
-        </View>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     base: {
         flex: 1,
-        padding: 16,
         backgroundColor: '#fff',
+    },
+    container: {
+        padding: 16,
     },
     textBlock: {
         marginBottom: 24,
