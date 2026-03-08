@@ -2,14 +2,7 @@ import { LocationControls } from '@/components/features/common/location-controls
 import { usePlaceStore } from '@/utils/stores'
 
 export const LocationPickerControls = () => {
-    const region = usePlaceStore(state => state.region)
+    const camera = usePlaceStore(state => state.camera)
 
-    return (
-        <LocationControls
-            coordinates={{
-                lat: region.latitude,
-                lng: region.longitude,
-            }}
-        />
-    )
+    return <LocationControls coordinates={camera.coordinates} />
 }

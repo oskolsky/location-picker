@@ -39,7 +39,7 @@ export const EditLocation = ({ place, onCancel }: EditLocationProps) => {
         <View style={styles.base}>
             <View style={styles.header}>
                 <Text style={styles.title}>Edit location</Text>
-                <Text style={styles.message}>Update the name or delete this location</Text>
+                <Text style={styles.message}>Enter a name for this place</Text>
             </View>
 
             <View style={styles.body}>

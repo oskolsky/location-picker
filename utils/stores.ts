@@ -1,24 +1,27 @@
-import { Region } from 'react-native-maps'
-
 import { create } from 'zustand'
 
 import * as db from '@/utils/db'
-import { Place } from '@/utils/types'
+import { MapCamera, Place } from '@/utils/types'
 
 type PlaceStore = {
     places: Place[]
-    region: Region
+    camera: MapCamera
 
     load: () => Promise<void>
     add: (place: Omit<Place, 'id' | 'createdAt' | 'pinnedAt'>) => Promise<void>
     update: (place: Place) => Promise<void>
     delete: (id: number) => Promise<void>
-    setRegion: (region: PlaceStore['region']) => void
+
+    setCamera: (camera: MapCamera) => void
 }
 
-export const usePlaceStore = create<PlaceStore>((set, get) => ({
+export const usePlaceStore = create<PlaceStore>(set => ({
     places: [],
-    region: { latitude: 51.47722, longitude: 0.0, latitudeDelta: 20, longitudeDelta: 20 },
+
+    camera: {
+        coordinates: { lat: 51.47722, lng: 0 },
+        zoom: 2,
+    },
 
     load: async () => {
         const places = await db.getPlaces()
@@ -43,5 +46,5 @@ export const usePlaceStore = create<PlaceStore>((set, get) => ({
         set({ places })
     },
 
-    setRegion: region => set({ region }),
+    setCamera: camera => set({ camera }),
 }))

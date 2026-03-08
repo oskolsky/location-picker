@@ -3,6 +3,11 @@ export type Coordinates = {
     lng: number
 }
 
+export type MapCamera = {
+    coordinates: Coordinates
+    zoom: number
+}
+
 export type SearchItem = {
     title: string
     description: string

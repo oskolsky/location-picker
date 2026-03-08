@@ -12,14 +12,15 @@ type PreviewShowOnMapButtonProps = {
 export const PreviewShowOnMapButton = ({ place }: PreviewShowOnMapButtonProps) => {
     const router = useRouter()
     const overlay = useOverlay()
-    const setRegion = usePlaceStore(state => state.setRegion)
+    const setCamera = usePlaceStore(state => state.setCamera)
 
     const handleClick = () => {
-        setRegion({
-            latitude: place.coordinates.lat,
-            longitude: place.coordinates.lng,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
+        setCamera({
+            coordinates: {
+                lat: place.coordinates.lat,
+                lng: place.coordinates.lng,
+            },
+            zoom: 15,
         })
         router.push('/')
         overlay.close()

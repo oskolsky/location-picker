@@ -20,7 +20,7 @@ const fetcher = async (query: string): Promise<SearchResponse> => {
 }
 
 export const LocationPickerSearch = () => {
-    const setRegion = usePlaceStore(state => state.setRegion)
+    const setCamera = usePlaceStore(state => state.setCamera)
 
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<SearchItem[]>([])
@@ -54,11 +54,12 @@ export const LocationPickerSearch = () => {
     }, [query])
 
     const handleSelectItem = (item: SearchItem) => {
-        setRegion({
-            latitude: item.coordinates.lat,
-            longitude: item.coordinates.lng,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
+        setCamera({
+            coordinates: {
+                lat: item.coordinates.lat,
+                lng: item.coordinates.lng,
+            },
+            zoom: 15,
         })
         setIsDropdownVisible(false)
         Keyboard.dismiss()
