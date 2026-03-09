@@ -22,7 +22,7 @@ export const SearchInput = (props: SearchInputProps) => {
         <View style={[styles.base, { borderColor, backgroundColor: props.variant === 'white' ? '#fff' : '#F3F4F6' }]}>
             <View style={styles.iconWrapper}>
                 {props.isLoading ? (
-                    <ActivityIndicator size="small" color="#2563EB" />
+                    <ActivityIndicator size="small" color="#000" />
                 ) : (
                     <SearchIcon size={20} strokeWidth={1.5} />
                 )}

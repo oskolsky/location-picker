@@ -52,7 +52,6 @@ export const LocationPickerSearch = () => {
     }, [query])
 
     const handleSelectItem = (item: SearchItem) => {
-        console.log(`${item.coordinates.lat}, ${item.coordinates.lng}`)
         setCamera({
             coordinates: {
                 lat: Number(item.coordinates.lat),
