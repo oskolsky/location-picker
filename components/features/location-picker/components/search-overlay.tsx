@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Pressable, StyleSheet, Text, View } from 'react-native'
 
-import { MapPinIcon } from 'lucide-react-native'
-
 import { SearchInput } from '@/components/ui/search-input'
 import { usePlaceStore } from '@/utils/stores'
 import { SearchItem } from '@/utils/types'
@@ -118,10 +116,9 @@ export const SearchOverlay = ({ visible, query, setQuery, onClose }: SearchOverl
                 keyboardShouldPersistTaps="handled"
                 data={results}
                 keyExtractor={(_, i) => String(i)}
+                style={styles.result}
                 renderItem={({ item }) => (
                     <Pressable style={styles.item} onPress={() => selectItem(item)}>
-                        <MapPinIcon size={16} color="#9CA3AF" />
-
                         <View style={styles.itemText}>
                             <Text style={styles.title}>{item.title}</Text>
                             <Text style={styles.desc}>{item.description}</Text>
@@ -144,16 +141,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 12,
-        marginBottom: 16,
     },
     cancel: {
         color: '#2563EB',
         fontSize: 16,
     },
+    result: {
+        padding: 12,
+    },
     item: {
         flexDirection: 'row',
         gap: 8,
-        paddingVertical: 12,
+        paddingVertical: 8,
     },
     itemText: {
         flex: 1,

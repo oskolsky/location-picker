@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         borderColor: '#EF4444',
     },
     focusedInput: {
-        borderColor: '#9CA3AF', // чуть темнее серого при фокусе
+        borderColor: '#9CA3AF',
     },
     iconWrapper: {
         position: 'absolute',

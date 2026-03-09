@@ -12,7 +12,6 @@ export default function RootLayout() {
             <KeyboardProvider>
                 <OverlayProvider>
                     <Header />
-
                     <Stack screenOptions={{ headerShown: false }}>
                         <Stack.Screen name="(tabs)" />
                     </Stack>

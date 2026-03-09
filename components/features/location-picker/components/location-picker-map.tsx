@@ -82,7 +82,7 @@ export const LocationPickerMap = () => {
 
                 <UserLocation
                     visible={true}
-                    showsUserHeadingIndicator={true}
+                    showsUserHeadingIndicator={false}
                     onUpdate={location => {
                         setUserLocation({ lat: location.coords.latitude, lng: location.coords.longitude })
                     }}

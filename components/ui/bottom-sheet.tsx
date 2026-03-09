@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from 'react'
 import { Dimensions, PanResponder, Pressable, StyleSheet, View } from 'react-native'
-import { useKeyboardHandler } from 'react-native-keyboard-controller'
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { scheduleOnRN } from 'react-native-worklets'
@@ -16,21 +16,10 @@ export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
     const insets = useSafeAreaInsets()
 
     const dragY = useSharedValue(SCREEN_HEIGHT)
-    const keyboardHeight = useSharedValue(0)
     const overlayOpacity = useSharedValue(0)
 
-    useKeyboardHandler(
-        {
-            onMove: event => {
-                'worklet'
-                keyboardHeight.value = Math.max(event.height - insets.bottom, 0)
-            },
-        },
-        [],
-    )
-
     const sheetStyle = useAnimatedStyle(() => ({
-        transform: [{ translateY: dragY.value - keyboardHeight.value }],
+        transform: [{ translateY: dragY.value }],
         paddingBottom: insets.bottom + 24,
     }))
 
@@ -70,17 +59,25 @@ export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
                 <Animated.View style={[styles.overlay, overlayStyle]} />
             </Pressable>
 
-            <Animated.View {...panResponder.panHandlers} style={[styles.sheet, sheetStyle]}>
-                <View style={styles.handle} />
-                {content}
-            </Animated.View>
+            <KeyboardAvoidingView
+                behavior="height"
+                keyboardVerticalOffset={0}
+                style={styles.content}
+                pointerEvents="box-none"
+            >
+                <Animated.View {...panResponder.panHandlers} style={[styles.sheet, sheetStyle]}>
+                    <View style={styles.handle} />
+                    {content}
+                    <View style={styles.sheetExtension} />
+                </Animated.View>
+            </KeyboardAvoidingView>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     overlay: {
-        flex: 1,
+        flex: 3,
         backgroundColor: 'rgba(0,0,0,0.4)',
     },
     sheet: {
@@ -104,5 +101,16 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         backgroundColor: '#d1d5db',
         marginBottom: 16,
+    },
+    content: {
+        flex: 1,
+    },
+    sheetExtension: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: -400,
+        height: 400,
+        backgroundColor: '#fff',
     },
 })
