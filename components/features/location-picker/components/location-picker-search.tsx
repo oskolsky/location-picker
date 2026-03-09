@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, FlatList, Keyboard, Pressable, StyleSheet, Text, View } from 'react-native'
+import { useEffect, useState } from 'react'
+import { FlatList, Keyboard, Pressable, StyleSheet, Text, View } from 'react-native'
 
-import { useRouter } from 'expo-router'
 import { MapPinIcon } from 'lucide-react-native'
 
-import { useOverlay } from '@/components/providers/overlay-provider'
 import { SearchInput } from '@/components/ui/search-input'
 import { usePlaceStore } from '@/utils/stores'
 import { SearchItem } from '@/utils/types'
@@ -54,10 +52,11 @@ export const LocationPickerSearch = () => {
     }, [query])
 
     const handleSelectItem = (item: SearchItem) => {
+        console.log(`${item.coordinates.lat}, ${item.coordinates.lng}`)
         setCamera({
             coordinates: {
-                lat: item.coordinates.lat,
-                lng: item.coordinates.lng,
+                lat: Number(item.coordinates.lat),
+                lng: Number(item.coordinates.lng),
             },
             zoom: 15,
         })

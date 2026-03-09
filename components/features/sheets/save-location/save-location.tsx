@@ -43,7 +43,7 @@ export const SaveLocation = ({ coordinates }: SaveLocationProps) => {
         <View style={styles.base}>
             <View style={styles.header}>
                 <Text style={styles.title}>Save location</Text>
-                <Text style={styles.message}>Enter a name for this place</Text>
+                <Text style={styles.message}>Enter a name for this location</Text>
             </View>
 
             <View style={styles.body}>
