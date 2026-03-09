@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 import { Camera, MapView, UserLocation } from '@maplibre/maplibre-react-native'
+import { LocateFixedIcon } from 'lucide-react-native'
 
 import PinShadow from '@/assets/images/pin-shadow.svg'
 import Pin from '@/assets/images/pin.svg'
@@ -15,6 +16,7 @@ export const LocationPickerMap = () => {
     const isProgrammaticRef = useRef(false)
 
     const [isMoving, setIsMoving] = useState(false)
+    const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
 
     useEffect(() => {
         const { lat, lng } = camera.coordinates
@@ -37,6 +39,14 @@ export const LocationPickerMap = () => {
         cameraRef.current?.setCamera({
             zoomLevel: camera.zoom - 1,
         })
+    }
+
+    const goToUserLocation = async () => {
+        if (!userLocation) {
+            return
+        }
+
+        setCamera({ coordinates: { lat: userLocation.lat, lng: userLocation.lng }, zoom: 15 })
     }
 
     return (
@@ -70,7 +80,13 @@ export const LocationPickerMap = () => {
                     }}
                 />
 
-                <UserLocation visible={true} showsUserHeadingIndicator={true} />
+                <UserLocation
+                    visible={true}
+                    showsUserHeadingIndicator={true}
+                    onUpdate={location => {
+                        setUserLocation({ lat: location.coords.latitude, lng: location.coords.longitude })
+                    }}
+                />
             </MapView>
 
             <View pointerEvents="none" style={styles.pinWrapper}>
@@ -78,13 +94,17 @@ export const LocationPickerMap = () => {
                 <Pin width={27} height={41} style={[styles.pin, isMoving ? { bottom: 0 } : undefined]} />
             </View>
 
-            <View style={styles.zoomControls}>
-                <Pressable style={styles.zoomButton} onPress={zoomIn}>
-                    <Text style={styles.zoomText}>+</Text>
+            <View style={styles.mapControls}>
+                <Pressable style={styles.mapButton} onPress={zoomIn}>
+                    <Text style={styles.mapButtonText}>+</Text>
                 </Pressable>
 
-                <Pressable style={styles.zoomButton} onPress={zoomOut}>
-                    <Text style={styles.zoomText}>−</Text>
+                <Pressable style={[styles.mapButton, { marginBottom: 16 }]} onPress={zoomOut}>
+                    <Text style={styles.mapButtonText}>−</Text>
+                </Pressable>
+
+                <Pressable style={styles.mapButton} onPress={goToUserLocation}>
+                    <LocateFixedIcon />
                 </Pressable>
             </View>
         </View>
@@ -116,13 +136,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: -7,
     },
-    zoomControls: {
+    mapControls: {
         position: 'absolute',
         right: 12,
         bottom: 12,
         gap: 8,
     },
-    zoomButton: {
+    mapButton: {
         width: 42,
         height: 42,
         borderRadius: 12,
@@ -135,7 +155,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         elevation: 4,
     },
-    zoomText: {
+    mapButtonText: {
         fontSize: 22,
         fontWeight: '600',
     },

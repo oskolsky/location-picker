@@ -24,10 +24,8 @@
         },
         "android": {
             "adaptiveIcon": {
-                "backgroundColor": "#E6F4FE",
-                "foregroundImage": "./assets/images/icons/android-icon-foreground.png",
-                "backgroundImage": "./assets/images/icons/android-icon-background.png",
-                "monochromeImage": "./assets/images/icons/android-icon-monochrome.png"
+                "foregroundImage": "./assets/images/icons/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
             },
             "predictiveBackGestureEnabled": false,
             "package": "location.picker.app"
