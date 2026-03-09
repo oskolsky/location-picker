@@ -8,6 +8,7 @@ type SearchInputProps = {
     placeholder: string
     variant?: 'gray' | 'white'
     isLoading: boolean
+    autoFocus?: boolean
     onChange: (value: string) => void
     onClear: () => void
     onFocus?: () => void
@@ -32,6 +33,7 @@ export const SearchInput = (props: SearchInputProps) => {
                 style={styles.input}
                 placeholder={props.placeholder}
                 value={props.value}
+                autoFocus={props.autoFocus}
                 onChangeText={props.onChange}
                 onFocus={() => {
                     setIsFocused(true)
