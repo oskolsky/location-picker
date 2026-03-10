@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Pressable, StyleSheet, Text, View } from 'react-native'
 
-import { SearchInput } from '@/components/ui/search-input'
 import { usePlaceStore } from '@/utils/stores'
 import { SearchItem } from '@/utils/types'
 
-type SearchOverlayProps = {
+import { LocationPickerSearchInput } from './location-picker-search-input'
+
+type LocationPickerSearchOverlayProps = {
     visible: boolean
     query: string
     setQuery: React.Dispatch<React.SetStateAction<string>>
@@ -16,7 +17,12 @@ type SearchResponse = {
     items: SearchItem[]
 }
 
-export const SearchOverlay = ({ visible, query, setQuery, onClose }: SearchOverlayProps) => {
+export const LocationPickerSearchOverlay = ({
+    visible,
+    query,
+    setQuery,
+    onClose,
+}: LocationPickerSearchOverlayProps) => {
     const setCamera = usePlaceStore(state => state.setCamera)
 
     const [results, setResults] = useState<SearchItem[]>([])
@@ -95,21 +101,13 @@ export const SearchOverlay = ({ visible, query, setQuery, onClose }: SearchOverl
     return (
         <View style={styles.overlay}>
             <View style={styles.header}>
-                <View style={{ flex: 1 }}>
-                    <SearchInput
-                        value={query}
-                        placeholder="Enter location or coordinates"
-                        variant="gray"
-                        isLoading={loading}
-                        autoFocus
-                        onChange={setQuery}
-                        onClear={() => setQuery('')}
-                    />
-                </View>
-
-                <Pressable onPress={onClose}>
-                    <Text style={styles.cancel}>Cancel</Text>
-                </Pressable>
+                <LocationPickerSearchInput
+                    value={query}
+                    isLoading={loading}
+                    onChange={setQuery}
+                    onClear={() => setQuery('')}
+                    onBack={onClose}
+                />
             </View>
 
             <FlatList

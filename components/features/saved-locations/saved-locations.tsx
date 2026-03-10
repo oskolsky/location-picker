@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 
 import { Divider } from '@/components/ui/divider'
-import { SearchInput } from '@/components/ui/search-input'
 import { usePlaceStore } from '@/utils/stores'
 
 import { SavedLocationsItem } from './components/saved-locations-item'
+import { SavedLocationsSearchInput } from './components/saved-locations-search-input'
 
 export const SavedLocations = () => {
     const places = usePlaceStore(state => state.places)
@@ -41,10 +41,8 @@ export const SavedLocations = () => {
         <View style={styles.base}>
             {places.length > 0 && (
                 <View style={styles.search}>
-                    <SearchInput
+                    <SavedLocationsSearchInput
                         value={search}
-                        placeholder="Search by name..."
-                        variant="white"
                         isLoading={false}
                         onChange={setSearch}
                         onClear={handleClear}

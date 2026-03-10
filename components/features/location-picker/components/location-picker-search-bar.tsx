@@ -2,27 +2,21 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 import { SearchIcon, XIcon } from 'lucide-react-native'
 
-type SearchBarProps = {
+type LocationPickerSearchBarProps = {
     value: string
-    placeholder?: string
     onPress: () => void
     onClear: () => void
 }
 
-export const SearchBar = ({
-    value,
-    placeholder = 'Enter location or coordinates',
-    onPress,
-    onClear,
-}: SearchBarProps) => {
+export const LocationPickerSearchBar = ({ value, onPress, onClear }: LocationPickerSearchBarProps) => {
     return (
         <Pressable style={styles.base} onPress={onPress}>
             <View style={styles.iconWrapper}>
-                <SearchIcon size={20} strokeWidth={1.5} />
+                <SearchIcon size={20} />
             </View>
 
             <Text style={[styles.text, !value && styles.placeholder]} numberOfLines={1}>
-                {value || placeholder}
+                {value || 'Enter location or coordinates'}
             </Text>
 
             {value ? (

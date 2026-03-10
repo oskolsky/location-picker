@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native'
 
 import { LocationPickerControls } from './components/location-picker-controls'
 import { LocationPickerMap } from './components/location-picker-map'
-import { SearchBar } from './components/search-bar'
-import { SearchOverlay } from './components/search-overlay'
+import { LocationPickerSearchBar } from './components/location-picker-search-bar'
+import { LocationPickerSearchOverlay } from './components/location-picker-search-overlay'
 
 export const LocationPicker = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -12,12 +12,12 @@ export const LocationPicker = () => {
 
     return (
         <View style={styles.base}>
-            <SearchBar value={query} onPress={() => setIsSearchOpen(true)} onClear={() => setQuery('')} />
+            <LocationPickerSearchBar value={query} onPress={() => setIsSearchOpen(true)} onClear={() => setQuery('')} />
 
             <LocationPickerMap />
             <LocationPickerControls />
 
-            <SearchOverlay
+            <LocationPickerSearchOverlay
                 visible={isSearchOpen}
                 query={query}
                 setQuery={setQuery}
