@@ -11,7 +11,7 @@ export const Header = () => {
                     <View style={styles.base}>
                         <MapPinCheckIcon strokeWidth={2.5} color="#000" />
                         <Text style={styles.text}>
-                            Location <Text style={styles.subText}>Picker</Text>
+                            My <Text style={styles.subText}>Saved</Text> Places
                         </Text>
                     </View>
                 </View>

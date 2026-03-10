@@ -3,8 +3,8 @@
         "developmentClient": {
             "silentLaunch": true
         },
-        "name": "Location Picker",
-        "slug": "location-picker",
+        "name": "My Saved Places",
+        "slug": "mysavedplaces",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/icons/icon.png",
@@ -17,7 +17,7 @@
         "userInterfaceStyle": "automatic",
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "location.picker.app",
+            "bundleIdentifier": "oskolsky.mysavedplaces",
             "infoPlist": {
                 "ITSAppUsesNonExemptEncryption": false
             }
@@ -28,7 +28,7 @@
                 "backgroundColor": "#ffffff"
             },
             "predictiveBackGestureEnabled": false,
-            "package": "location.picker.app"
+            "package": "oskolsky.mysavedplaces"
         },
         "web": {
             "output": "static",

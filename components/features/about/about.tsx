@@ -9,7 +9,7 @@ export const About = () => {
         <ScrollView style={styles.base}>
             <View style={styles.container}>
                 <Text style={[styles.text, styles.aboutText]}>
-                    <Text style={styles.bold}>Location Picker</Text> is a simple and convenient tool for finding,
+                    <Text style={styles.bold}>My Saved Places</Text> is a simple and convenient tool for finding,
                     saving, and sharing locations. Search for places using an address or coordinates, then easily open
                     or share them with apps like Google Maps, Waze, Apple Maps, or Yandex Maps.
                 </Text>
