@@ -9,13 +9,7 @@ import { SavedLocationsSearchInput } from './components/saved-locations-search-i
 
 export const SavedLocations = () => {
     const places = usePlaceStore(state => state.places)
-    const loadPlaces = usePlaceStore(state => state.load)
-
     const [search, setSearch] = useState('')
-
-    useEffect(() => {
-        loadPlaces()
-    }, [])
 
     const { pinnedPlaces, regularPlaces } = useMemo(() => {
         let result = [...places]
