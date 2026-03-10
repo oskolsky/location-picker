@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
-import { Camera, MapView, UserLocation } from '@maplibre/maplibre-react-native'
+import { Camera, CircleLayer, MapView, ShapeSource, UserLocation } from '@maplibre/maplibre-react-native'
+import { CameraRef } from '@maplibre/maplibre-react-native'
+import { FeatureCollection, Point } from 'geojson'
 import { LocateFixedIcon } from 'lucide-react-native'
 
 import PinShadow from '@/assets/images/pin-shadow.svg'
@@ -10,13 +12,19 @@ import { usePlaceStore } from '@/utils/stores'
 
 export const LocationPickerMap = () => {
     const camera = usePlaceStore(state => state.camera)
+    const places = usePlaceStore(state => state.places)
     const setCamera = usePlaceStore(state => state.setCamera)
+    const loadPlaces = usePlaceStore(state => state.load)
 
-    const cameraRef = useRef(null)
+    const cameraRef = useRef<CameraRef | null>(null)
     const isProgrammaticRef = useRef(false)
 
     const [isMoving, setIsMoving] = useState(false)
     const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
+
+    useEffect(() => {
+        loadPlaces()
+    }, [])
 
     useEffect(() => {
         const { lat, lng } = camera.coordinates
@@ -41,13 +49,35 @@ export const LocationPickerMap = () => {
         })
     }
 
-    const goToUserLocation = async () => {
-        if (!userLocation) {
-            return
-        }
+    const goToUserLocation = () => {
+        if (!userLocation) return
 
-        setCamera({ coordinates: { lat: userLocation.lat, lng: userLocation.lng }, zoom: 15 })
+        setCamera({
+            coordinates: {
+                lat: userLocation.lat,
+                lng: userLocation.lng,
+            },
+            zoom: 15,
+        })
     }
+
+    const placesGeoJSON: FeatureCollection<Point> = useMemo(
+        () => ({
+            type: 'FeatureCollection',
+            features: places.map(place => ({
+                type: 'Feature',
+                id: place.id,
+                geometry: {
+                    type: 'Point',
+                    coordinates: [place.coordinates.lng, place.coordinates.lat],
+                },
+                properties: {
+                    name: place.name,
+                },
+            })),
+        }),
+        [places],
+    )
 
     return (
         <View style={styles.base}>
@@ -84,9 +114,24 @@ export const LocationPickerMap = () => {
                     visible={true}
                     showsUserHeadingIndicator={false}
                     onUpdate={location => {
-                        setUserLocation({ lat: location.coords.latitude, lng: location.coords.longitude })
+                        setUserLocation({
+                            lat: location.coords.latitude,
+                            lng: location.coords.longitude,
+                        })
                     }}
                 />
+
+                <ShapeSource id="places-source" shape={placesGeoJSON}>
+                    <CircleLayer
+                        id="places-layer"
+                        style={{
+                            circleRadius: 6,
+                            circleColor: '#F97316',
+                            circleStrokeWidth: 2,
+                            circleStrokeColor: '#ffffff',
+                        }}
+                    />
+                </ShapeSource>
             </MapView>
 
             <View pointerEvents="none" style={styles.pinWrapper}>
@@ -130,7 +175,6 @@ const styles = StyleSheet.create({
         bottom: -6,
         width: 27,
         height: 41,
-        resizeMode: 'contain',
     },
     pinShadow: {
         position: 'absolute',
