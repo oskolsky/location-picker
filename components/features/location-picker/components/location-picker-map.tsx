@@ -111,7 +111,7 @@ export const LocationPickerMap = () => {
                 />
 
                 <UserLocation
-                    visible={true}
+                    visible
                     showsUserHeadingIndicator={false}
                     onUpdate={location => {
                         setUserLocation({

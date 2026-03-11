@@ -19,7 +19,9 @@
             "supportsTablet": true,
             "bundleIdentifier": "oskolsky.mysavedplaces",
             "infoPlist": {
-                "ITSAppUsesNonExemptEncryption": false
+                "ITSAppUsesNonExemptEncryption": false,
+                "NSLocationWhenInUseUsageDescription": "We use your location to select a position on the map",
+                "NSLocationAlwaysAndWhenInUseUsageDescription": "We use your location to select a position on the map"
             }
         },
         "android": {
