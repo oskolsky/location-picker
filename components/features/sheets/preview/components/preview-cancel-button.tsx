@@ -4,12 +4,12 @@ import { Button } from '@/components/ui/button'
 export const PreviewCancelButton = () => {
     const overlay = useOverlay()
 
-    const handleClick = () => {
+    const handlePress = () => {
         overlay.close()
     }
 
     return (
-        <Button variant="minor" onPress={handleClick}>
+        <Button variant="minor" onPress={handlePress}>
             Cancel
         </Button>
     )

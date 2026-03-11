@@ -1,4 +1,4 @@
-import { SaveLocation } from '@/components/features/sheets/save-location/save-location'
+import { AddLocation } from '@/components/features/sheets/add-location/add-location'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
 import { Coordinates } from '@/utils/types'
@@ -11,7 +11,7 @@ export const LocationControlsSaveButton = ({ coordinates }: LocationControlsSave
     const overlay = useOverlay()
 
     const handleSave = () => {
-        overlay.open(<SaveLocation coordinates={coordinates} />)
+        overlay.open(<AddLocation coordinates={coordinates} />)
     }
 
     return (

@@ -11,12 +11,12 @@ type PreviewEditButtonProps = {
 export const PreviewEditButton = ({ place, onCancel }: PreviewEditButtonProps) => {
     const overlay = useOverlay()
 
-    const handleClick = () => {
+    const handlePress = () => {
         overlay.open(<EditLocation place={place} onCancel={onCancel} />)
     }
 
     return (
-        <Button variant="minor" onPress={handleClick}>
+        <Button variant="minor" onPress={handlePress}>
             Edit
         </Button>
     )

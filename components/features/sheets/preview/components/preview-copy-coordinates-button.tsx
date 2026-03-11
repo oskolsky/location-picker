@@ -5,22 +5,23 @@ import * as Clipboard from 'expo-clipboard'
 import { CheckIcon } from 'lucide-react-native'
 
 import { Button } from '@/components/ui/button'
+import { Place } from '@/utils/types'
 
-type LocationActionsCopyButtonProps = {
-    link: string
+type PreviewCopyCoordinatesButtonProps = {
+    place: Place
 }
 
-export const LocationActionsCopyButton = ({ link }: LocationActionsCopyButtonProps) => {
+export const PreviewCopyCoordinatesButton = ({ place }: PreviewCopyCoordinatesButtonProps) => {
     const [copied, setCopied] = useState(false)
 
     const handlePress = async () => {
         try {
-            await Clipboard.setStringAsync(link)
+            await Clipboard.setStringAsync(`${place.coordinates.lat}, ${place.coordinates.lng}`)
             setCopied(true)
             setTimeout(() => setCopied(false), 2000)
         } catch (err) {
-            console.error('Failed to copy link', err)
-            Alert.alert('Error', 'Failed to copy link')
+            console.error('Failed to copy coordinates', err)
+            Alert.alert('Error', 'Failed to copy coordinates')
         }
     }
 
@@ -32,7 +33,7 @@ export const LocationActionsCopyButton = ({ link }: LocationActionsCopyButtonPro
                     <Text style={styles.text}>Copied</Text>
                 </View>
             ) : (
-                'Copy link'
+                'Copy coordinates'
             )}
         </Button>
     )

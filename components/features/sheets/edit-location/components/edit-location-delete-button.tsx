@@ -4,16 +4,16 @@ import { Button } from '@/components/ui/button'
 import { usePlaceStore } from '@/utils/stores'
 import { Place } from '@/utils/types'
 
-type PreviewDeleteButtonProps = {
+type EditLocationDeleteButtonProps = {
     place: Place
     onCancel: () => void
 }
 
-export const PreviewDeleteButton = ({ place, onCancel }: PreviewDeleteButtonProps) => {
+export const EditLocationDeleteButton = ({ place, onCancel }: EditLocationDeleteButtonProps) => {
     const overlay = useOverlay()
     const deletePlace = usePlaceStore(state => state.delete)
 
-    const handleClick = () => {
+    const handlePress = () => {
         overlay.open(
             <Confirmation
                 title="Delete location"
@@ -32,7 +32,7 @@ export const PreviewDeleteButton = ({ place, onCancel }: PreviewDeleteButtonProp
     }
 
     return (
-        <Button variant="minor" onPress={handleClick}>
+        <Button variant="minor" onPress={handlePress}>
             Delete
         </Button>
     )

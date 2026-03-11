@@ -1,8 +1,7 @@
 import { ReactNode, useEffect } from 'react'
 import { Dimensions, PanResponder, Pressable, StyleSheet, View } from 'react-native'
-import { useKeyboardHandler } from 'react-native-keyboard-controller'
+import { KeyboardStickyView } from 'react-native-keyboard-controller'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { scheduleOnRN } from 'react-native-worklets'
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
@@ -13,25 +12,11 @@ type BottomSheetProps = {
 }
 
 export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
-    const insets = useSafeAreaInsets()
-
     const dragY = useSharedValue(SCREEN_HEIGHT)
-    const keyboardHeight = useSharedValue(0)
     const overlayOpacity = useSharedValue(0)
 
-    useKeyboardHandler(
-        {
-            onMove: event => {
-                'worklet'
-                keyboardHeight.value = Math.max(event.height - insets.bottom, 0)
-            },
-        },
-        [],
-    )
-
     const sheetStyle = useAnimatedStyle(() => ({
-        transform: [{ translateY: dragY.value - keyboardHeight.value }],
-        paddingBottom: insets.bottom + 24,
+        transform: [{ translateY: dragY.value }],
     }))
 
     const overlayStyle = useAnimatedStyle(() => ({
@@ -65,16 +50,16 @@ export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
     })
 
     return (
-        <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+        <KeyboardStickyView style={StyleSheet.absoluteFill} pointerEvents="box-none">
             <Pressable style={StyleSheet.absoluteFill} onPress={closeWithAnimation}>
                 <Animated.View style={[styles.overlay, overlayStyle]} />
             </Pressable>
-
             <Animated.View {...panResponder.panHandlers} style={[styles.sheet, sheetStyle]}>
                 <View style={styles.handle} />
                 {content}
+                <View style={styles.bottom} />
             </Animated.View>
-        </View>
+        </KeyboardStickyView>
     )
 }
 
@@ -92,6 +77,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
         padding: 24,
+        paddingBottom: 48,
         shadowColor: '#000',
         shadowOpacity: 0.2,
         shadowRadius: 20,
@@ -104,5 +90,13 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         backgroundColor: '#d1d5db',
         marginBottom: 16,
+    },
+    bottom: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: -500,
+        backgroundColor: '#fff',
+        height: 500,
     },
 })

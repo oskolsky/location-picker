@@ -14,7 +14,7 @@ export const PreviewShowOnMapButton = ({ place }: PreviewShowOnMapButtonProps) =
     const overlay = useOverlay()
     const setCamera = usePlaceStore(state => state.setCamera)
 
-    const handleClick = () => {
+    const handlePress = () => {
         setCamera({
             coordinates: {
                 lat: place.coordinates.lat,
@@ -27,7 +27,7 @@ export const PreviewShowOnMapButton = ({ place }: PreviewShowOnMapButtonProps) =
     }
 
     return (
-        <Button variant="major" onPress={handleClick}>
+        <Button variant="major" onPress={handlePress}>
             Show on map
         </Button>
     )

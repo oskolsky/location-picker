@@ -4,7 +4,7 @@ import { useOverlay } from '@/components/providers/overlay-provider'
 import { Place } from '@/utils/types'
 
 import { PreviewCancelButton } from './components/preview-cancel-button'
-import { PreviewDeleteButton } from './components/preview-delete-button'
+import { PreviewCopyCoordinatesButton } from './components/preview-copy-coordinates-button'
 import { PreviewEditButton } from './components/preview-edit-button'
 import { PreviewShowOnMapButton } from './components/preview-show-on-map-button'
 
@@ -28,8 +28,8 @@ export const Preview = ({ place }: PreviewProps) => {
 
             <View style={styles.body}>
                 <PreviewShowOnMapButton place={place} />
+                <PreviewCopyCoordinatesButton place={place} />
                 <PreviewEditButton place={place} onCancel={reopenPreview} />
-                <PreviewDeleteButton place={place} onCancel={reopenPreview} />
                 <PreviewCancelButton />
             </View>
         </View>

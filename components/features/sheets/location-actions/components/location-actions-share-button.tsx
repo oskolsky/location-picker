@@ -7,7 +7,7 @@ type LocationActionsShareButtonProps = {
 }
 
 export const LocationActionsShareButton = ({ link }: LocationActionsShareButtonProps) => {
-    const handleShare = async () => {
+    const handlePress = async () => {
         try {
             await Share.share({ message: link })
         } catch (err) {
@@ -17,7 +17,7 @@ export const LocationActionsShareButton = ({ link }: LocationActionsShareButtonP
     }
 
     return (
-        <Button variant="minor" onPress={handleShare}>
+        <Button variant="minor" onPress={handlePress}>
             Share
         </Button>
     )
