@@ -36,7 +36,7 @@ export const SavedLocationsItem = ({ place }: SavedLocationsItemProps) => {
             </TouchableOpacity>
 
             <Pressable style={styles.icon} onPress={handleOnPin}>
-                <PinIcon size={18} color={place.pinned ? '#000000' : '#9CA3AF'} />
+                <PinIcon size={18} color={place.pinned ? '#F97316' : '#9CA3AF'} />
             </Pressable>
         </View>
     )
