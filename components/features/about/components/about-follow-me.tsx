@@ -1,6 +1,6 @@
 import { Linking, Pressable, StyleSheet, Text, View } from 'react-native'
 
-import { ExternalLink } from 'lucide-react-native'
+import { ExternalLinkIcon } from 'lucide-react-native'
 
 type LinkItem = {
     title: string
@@ -25,7 +25,7 @@ export const AboutFollowMe = () => {
                     <Text style={styles.bullet}>•</Text>
                     <View style={styles.link}>
                         <Text style={styles.linkTitle}>{link.title}</Text>
-                        <ExternalLink size={13} strokeWidth={2.25} color="#2563eb" />
+                        <ExternalLinkIcon size={13} strokeWidth={2.25} color="#2563eb" />
                     </View>
                 </Pressable>
             ))}

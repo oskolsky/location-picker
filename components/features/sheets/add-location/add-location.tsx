@@ -4,6 +4,7 @@ import { Coordinates } from '@/utils/types'
 
 import { AddLocationCancelButton } from './components/add-location-cancel-button'
 import { AddLocationForm } from './components/add-location-form'
+import { AddLocationParkCarButton } from './components/add-location-park-car-button'
 
 type AddLocationProps = {
     coordinates: Coordinates
@@ -19,6 +20,7 @@ export const AddLocation = ({ coordinates }: AddLocationProps) => {
 
             <View style={styles.body}>
                 <AddLocationForm coordinates={coordinates} />
+                <AddLocationParkCarButton />
                 <AddLocationCancelButton />
             </View>
         </View>

@@ -1,4 +1,6 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+
+import { ExternalLinkIcon } from 'lucide-react-native'
 
 import { AboutExpander } from './components/about-expander'
 import { AboutFollowMe } from './components/about-follow-me'
@@ -15,7 +17,16 @@ export const About = () => {
                 </Text>
 
                 <AboutInfoBox>
-                    We don’t store any personal data. The saved locations are only stored in your device.
+                    <Text style={{ color: '#60a5fa', fontSize: 14, lineHeight: 20 }}>
+                        We don’t store any personal data. The saved locations are only stored on your device.
+                    </Text>
+
+                    <Pressable onPress={() => Linking.openURL('https://yourdomain.com/legal/app/privacy-policy')}>
+                        <View style={styles.link}>
+                            <Text style={styles.linkTitle}>Read our Privacy Policy</Text>
+                            <ExternalLinkIcon size={13} strokeWidth={2.25} color="#2563eb" />
+                        </View>
+                    </Pressable>
                 </AboutInfoBox>
 
                 <AboutExpander title="About">
@@ -79,5 +90,16 @@ const styles = StyleSheet.create({
     },
     bold: {
         fontWeight: '700',
+    },
+    link: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 3,
+        flex: 0,
+    },
+    linkTitle: {
+        fontSize: 14,
+        lineHeight: 20,
+        color: '#2563eb',
     },
 })
