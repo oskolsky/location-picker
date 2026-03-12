@@ -5,7 +5,7 @@ export const AddLocationParkCarButton = () => {
 
     return (
         <Button onPress={handlePress} variant="minor">
-            Park my car
+            Park My Car
         </Button>
     )
 }
