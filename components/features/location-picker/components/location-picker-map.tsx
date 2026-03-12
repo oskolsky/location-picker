@@ -17,6 +17,7 @@ export const LocationPickerMap = () => {
     const loadPlaces = usePlaceStore(state => state.load)
 
     const cameraRef = useRef<CameraRef | null>(null)
+    const hasCenteredOnUser = useRef(false)
     const isProgrammaticRef = useRef(false)
 
     const [isMoving, setIsMoving] = useState(false)
@@ -114,10 +115,19 @@ export const LocationPickerMap = () => {
                     visible
                     showsUserHeadingIndicator={false}
                     onUpdate={location => {
-                        setUserLocation({
-                            lat: location.coords.latitude,
-                            lng: location.coords.longitude,
-                        })
+                        const lat = location.coords.latitude
+                        const lng = location.coords.longitude
+
+                        setUserLocation({ lat, lng })
+
+                        if (!hasCenteredOnUser.current) {
+                            hasCenteredOnUser.current = true
+
+                            setCamera({
+                                coordinates: { lat, lng },
+                                zoom: 15,
+                            })
+                        }
                     }}
                 />
 
