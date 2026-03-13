@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Divider } from '@/components/ui/divider'
 import { usePlaceStore } from '@/utils/store'
 
+import { SavedLocationsCarItem } from './components/saved-locations-car-item'
 import { SavedLocationsItem } from './components/saved-locations-item'
 import { SavedLocationsSearchInput } from './components/saved-locations-search-input'
 
@@ -48,6 +49,9 @@ export const SavedLocations = () => {
                 <View style={styles.list}>
                     {pinnedPlaces.length > 0 && (
                         <>
+                            {pinnedPlaces.map(place => (
+                                <SavedLocationsCarItem key={place.id} place={place} />
+                            ))}
                             {pinnedPlaces.map(place => (
                                 <SavedLocationsItem key={place.id} place={place} />
                             ))}

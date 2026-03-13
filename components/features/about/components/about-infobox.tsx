@@ -1,16 +1,12 @@
 import { ReactNode } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 type AboutInfoBoxProps = {
     children: ReactNode
 }
 
 export const AboutInfoBox = ({ children }: AboutInfoBoxProps) => {
-    return (
-        <View style={styles.base}>
-            <Text style={styles.text}>{children}</Text>
-        </View>
-    )
+    return <View style={styles.base}>{children}</View>
 }
 
 const styles = StyleSheet.create({
@@ -21,10 +17,5 @@ const styles = StyleSheet.create({
         borderColor: '#dbeafe',
         backgroundColor: '#eff6ff',
         gap: 8,
-    },
-    text: {
-        fontSize: 14,
-        lineHeight: 20,
-        color: '#60a5fa',
     },
 })
