@@ -1,7 +1,7 @@
 import { Confirmation } from '@/components/features/sheets/confirmation/confirmation'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
-import { usePlaceStore } from '@/utils/stores'
+import { usePlaceStore } from '@/utils/store'
 import { Place } from '@/utils/types'
 
 type EditLocationDeleteButtonProps = {

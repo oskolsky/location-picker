@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 
 import { Divider } from '@/components/ui/divider'
-import { usePlaceStore } from '@/utils/stores'
+import { usePlaceStore } from '@/utils/store'
 
 import { SavedLocationsCarItem } from './components/saved-locations-car-item'
 import { SavedLocationsItem } from './components/saved-locations-item'
