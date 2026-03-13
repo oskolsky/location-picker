@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { usePlaceStore } from '@/utils/stores'
+import { usePlaceStore } from '@/utils/store'
 import { Place } from '@/utils/types'
 
 type EditLocationFormProps = {

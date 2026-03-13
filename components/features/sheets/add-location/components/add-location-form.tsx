@@ -5,8 +5,8 @@ import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { generateDefaultName } from '@/utils/helpers'
-import { usePlaceStore } from '@/utils/stores'
-import { Coordinates } from '@/utils/types'
+import { usePlaceStore } from '@/utils/store'
+import { Coordinates, PLACE_TYPES } from '@/utils/types'
 
 type AddLocationFormProps = {
     coordinates: Coordinates
@@ -28,7 +28,15 @@ export const AddLocationForm = ({ coordinates }: AddLocationFormProps) => {
         }
 
         try {
-            await addPlace({ name: trimmed, coordinates })
+            await addPlace({
+                id: Date.now(),
+                name: trimmed,
+                coordinates,
+                categories: null,
+                type: PLACE_TYPES.DEFAULT,
+                pinned: false,
+                createdAt: Date.now(),
+            })
             overlay.close()
         } catch (err) {
             console.error('Failed to save location', err)

@@ -8,7 +8,7 @@ import { LocateFixedIcon } from 'lucide-react-native'
 
 import PinShadow from '@/assets/images/pin-shadow.svg'
 import Pin from '@/assets/images/pin.svg'
-import { usePlaceStore } from '@/utils/stores'
+import { usePlaceStore } from '@/utils/store'
 
 export const LocationPickerMap = () => {
     const camera = usePlaceStore(state => state.camera)
@@ -67,12 +67,12 @@ export const LocationPickerMap = () => {
             type: 'FeatureCollection',
             features: places.map(place => ({
                 type: 'Feature',
-                id: place.id,
                 geometry: {
                     type: 'Point',
                     coordinates: [place.coordinates.lng, place.coordinates.lat],
                 },
                 properties: {
+                    id: place.id,
                     name: place.name,
                 },
             })),

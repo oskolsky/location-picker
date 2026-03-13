@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Pressable, StyleSheet, Text, View } from 'react-native'
 
-import { usePlaceStore } from '@/utils/stores'
+import { usePlaceStore } from '@/utils/store'
 import { SearchItem } from '@/utils/types'
 
 import { LocationPickerSearchInput } from './location-picker-search-input'

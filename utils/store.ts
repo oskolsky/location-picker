@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import * as db from '@/utils/db'
+import * as storage from '@/utils/storage'
 import { MapCamera, Place } from '@/utils/types'
 
 type PlaceStore = {
@@ -8,7 +8,8 @@ type PlaceStore = {
     camera: MapCamera
 
     load: () => Promise<void>
-    add: (place: Omit<Place, 'id' | 'createdAt' | 'pinnedAt'>) => Promise<void>
+
+    add: (place: Place) => Promise<void>
     update: (place: Place) => Promise<void>
     delete: (id: number) => Promise<void>
 
@@ -24,25 +25,25 @@ export const usePlaceStore = create<PlaceStore>(set => ({
     },
 
     load: async () => {
-        const places = await db.getPlaces()
+        const places = await storage.getPlaces()
         set({ places })
     },
 
     add: async place => {
-        await db.addPlace(place)
-        const places = await db.getPlaces()
+        await storage.addPlace(place)
+        const places = await storage.getPlaces()
         set({ places })
     },
 
     update: async place => {
-        await db.updatePlace(place)
-        const places = await db.getPlaces()
+        await storage.updatePlace(place)
+        const places = await storage.getPlaces()
         set({ places })
     },
 
     delete: async id => {
-        await db.deletePlace(id)
-        const places = await db.getPlaces()
+        await storage.deletePlace(id)
+        const places = await storage.getPlaces()
         set({ places })
     },
 

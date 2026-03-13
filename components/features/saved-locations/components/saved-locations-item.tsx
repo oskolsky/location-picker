@@ -4,7 +4,7 @@ import { PinIcon } from 'lucide-react-native'
 
 import { Preview } from '@/components/features/sheets/preview/preview'
 import { useOverlay } from '@/components/providers/overlay-provider'
-import { usePlaceStore } from '@/utils/stores'
+import { usePlaceStore } from '@/utils/store'
 import { Place } from '@/utils/types'
 
 type SavedLocationsItemProps = {
