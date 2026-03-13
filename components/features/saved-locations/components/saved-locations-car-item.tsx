@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
-import { CarIcon } from 'lucide-react-native'
-
 import { PreviewCarPark } from '@/components/features/sheets/preview-car-park/preview-car-park'
 import { useOverlay } from '@/components/providers/overlay-provider'
+import { formatDuration, formatParkedDate } from '@/utils/date'
+import { useElapsedTime } from '@/utils/hooks/use-elapsed-time'
 import { Place } from '@/utils/types'
 
 type SavedLocationsCarItemProps = {
@@ -12,17 +12,20 @@ type SavedLocationsCarItemProps = {
 
 export const SavedLocationsCarItem = ({ place }: SavedLocationsCarItemProps) => {
     const overlay = useOverlay()
+    const elapsed = useElapsedTime(place.createdAt)
 
     const handleOnPress = () => {
         overlay.open(<PreviewCarPark place={place} />)
     }
 
     return (
-        <TouchableOpacity style={styles.base} onPress={handleOnPress}>
-            <View style={styles.name}>
-                <Text style={styles.nameText}>My Car</Text>
+        <TouchableOpacity style={styles.base} onPress={handleOnPress} activeOpacity={0.8}>
+            <View style={styles.row}>
+                <Text style={styles.name}>My Car</Text>
+                <Text style={styles.date}>{place.createdAt ? formatParkedDate(place.createdAt) : ''}</Text>
             </View>
-            <CarIcon />
+
+            <Text style={styles.timer}>{formatDuration(elapsed)}</Text>
         </TouchableOpacity>
     )
 }
@@ -38,14 +41,25 @@ const styles = StyleSheet.create({
         borderColor: '#FFEDD5',
         borderRadius: 12,
     },
-    name: {
-        flex: 1,
+    row: {
+        flexDirection: 'column',
+        gap: 2,
     },
-    nameText: {
-        flexShrink: 1,
-        flexWrap: 'wrap',
+    name: {
         fontSize: 14,
         lineHeight: 20,
         fontWeight: '700',
+    },
+    date: {
+        fontSize: 12,
+        lineHeight: 16,
+        color: '#6B7280',
+    },
+    timer: {
+        fontSize: 14,
+        lineHeight: 20,
+        fontWeight: '600',
+        fontVariant: ['tabular-nums'],
+        color: '#111',
     },
 })
